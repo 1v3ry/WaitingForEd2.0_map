@@ -13,7 +13,7 @@ CREATE TABLE `submits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `alias` varchar(100) NOT NULL,
   `position` varchar(50) NOT NULL COMMENT 'latitude,longitude',
-  `text` text NOT NULL,
+  `text` text,
   `images` varchar(1000) NOT NULL COMMENT 'IMG1.png[;IMG2.jpg[;IMG3.gif[...]]]',
   `time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
