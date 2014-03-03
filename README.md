@@ -8,7 +8,6 @@ A world-wide openstreetmap where people can upload photos of themselves in refer
 The map will be available on a subdomain of http://www.snowden-support.com/.
 
 The CREATE(s) of the mySQL (5.5) table(s) are the following:
-
 ```MYSQL
 CREATE TABLE `submits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
