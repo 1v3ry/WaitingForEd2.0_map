@@ -19,3 +19,7 @@ CREATE TABLE `submits` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ```
+
+Usable plug-ins:
+/jquery v1.10.3
+/openlayers v2.13.1
