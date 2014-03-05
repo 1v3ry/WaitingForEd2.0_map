@@ -22,8 +22,8 @@ CREATE TABLE `submits` (
 
 Usable plug-ins:
 
-plugin     | version
+folder     | version
 ---------- | -------
-jquery     | v1.10.3
-openlayers | v2.13.1
+/jquery     | v1.10.3
+/openlayers | v2.13.1
 
