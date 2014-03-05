@@ -24,6 +24,6 @@ Usable plug-ins:
 
 folder     | version
 ---------- | -------
-/jquery     | v1.10.3
+/jquery     | v1.10.4
 /openlayers | v2.13.1
 
