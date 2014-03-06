@@ -515,19 +515,15 @@ img.olTileImage {
     max-width: none;
 }
 
-#OpenLayers_Control_PanZoomBar_20 {
+div[id^=OpenLayers_Control_PanZoomBar] {
 	top:50% !important;
 }
 
-#OpenLayers_Control_Attribution_7 {
+div[id^=OpenLayers_Control_Attribution] {
 	right:5% !important;
 	bottom:5% !important;
 }
 
-@media screen and (max-width: 700px)
-{
-	#OpenLayers_Control_PanZoomBar_20 
-	{
-		display:none;
-	}
+div[id^=OpenLayers_Control_MousePosition] {
+	display:none !important;
 }
