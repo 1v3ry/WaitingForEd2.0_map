@@ -609,6 +609,9 @@ button.ui-button::-moz-focus-inner {
 .ui-progressbar-indeterminate .ui-progressbar-value {
 	background-image: none;
 }
+.ui-progressbar-value {
+	text-align:right;
+}
 .ui-slider {
 	position: relative;
 	text-align: left;
@@ -805,8 +808,8 @@ body .ui-tooltip {
 	color: #333333;
 }
 .ui-widget-header {
-	border: 1px solid #e78f08;
-	background: #f6a828 url(images/ui-bg_gloss-wave_35_f6a828_500x100.png) 50% 50% repeat-x;
+	border: 1px solid #888888;
+	background: #CCCCCC url(images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x;
 	color: #ffffff;
 	font-weight: bold;
 }

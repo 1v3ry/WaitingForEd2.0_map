@@ -515,15 +515,11 @@ img.olTileImage {
     max-width: none;
 }
 
-div[id^=OpenLayers_Control_PanZoomBar] {
+div.olControlPanZoomBar {
 	top:50% !important;
 }
 
 div[id^=OpenLayers_Control_Attribution] {
 	right:5% !important;
 	bottom:5% !important;
-}
-
-div[id^=OpenLayers_Control_MousePosition] {
-	display:none !important;
 }
