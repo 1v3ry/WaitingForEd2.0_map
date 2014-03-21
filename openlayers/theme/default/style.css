@@ -263,8 +263,9 @@ div.olControlSaveFeaturesItemInactive {
 }
 
 .olPopupCloseBox {
-  background: url("img/close.gif") no-repeat;
+  background: url("img/close.png") no-repeat;
   cursor: pointer;
+  background-size: 17px 18px;
 }
 
 .olFramedCloudPopupContent {
@@ -522,4 +523,6 @@ div.olControlPanZoomBar {
 div[id^=OpenLayers_Control_Attribution] {
 	right:5% !important;
 	bottom:5% !important;
+	letter-spacing:.07em;
+	z-index:5;
 }

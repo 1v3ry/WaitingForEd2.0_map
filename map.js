@@ -6,6 +6,10 @@ var markers = new OpenLayers.Layer.Markers( "Markers" );
 var user_location_marker;
 var map_e = '';
 var user_location_icon = new OpenLayers.Icon('location.png', new OpenLayers.Size(40,40), new OpenLayers.Pixel(-20, -40));
+var submissions = new Array;
+var popup;
+var select;
+var features = [];
 
 var element = document.createElement('div')
 if("ontouchstart" in  element)
@@ -51,6 +55,7 @@ function man_set_user_location(pos)
  		user_lat = parseFloat(map.getLonLatFromPixel({x:pos.changedTouches[0].clientX,y:pos.changedTouches[0].clientY}).lat);
 		user_lon = parseFloat(map.getLonLatFromPixel({x:pos.changedTouches[0].clientX,y:pos.changedTouches[0].clientY}).lon);
 		map.events.unregister("touchend", map, man_set_user_location);
+		showhideform();
  	}
  	else
  	{
@@ -92,8 +97,22 @@ function showhideform()
 	}
 }
 
+function showhideimprint()
+{
+	if(document.getElementById("map").className.indexOf("small") == -1)
+	{
+		$("#map").addClass("small", {easing: "easeInQuart"}, 500);
+	}
+	else
+	{
+		$("#map").removeClass("small", {easing: "easeOutQuart"}, 500);
+	}
+}
+
 function initialize_map()
 {
+	
+	// Create the necessary controls
 	if(mobile)
     {
     	var controls = new OpenLayers.Control.TouchNavigation({
@@ -106,12 +125,15 @@ function initialize_map()
     {
     	var controls = new OpenLayers.Control.PanZoomBar();
     }
+    
+    // create the map
+    
     map = new OpenLayers.Map('map', 
     	{ controls: 
     		[
     			controls,
-    			new OpenLayers.Control.Navigation(),
     			new OpenLayers.Control.Attribution(),
+    			new OpenLayers.Control.Navigation()
     		]
     	});
         var mapnik         = new OpenLayers.Layer.OSM();
@@ -121,6 +143,127 @@ function initialize_map()
     map.addLayer(mapnik);
     map.addLayer(markers);
     map.setCenter(position, zoom);
+
+		// Get and display the submissions
+	var ajaxRequest;  // The variable that makes Ajax possible!	
+	try{
+		// Opera 8.0+, Firefox, Safari
+		ajaxRequest = new XMLHttpRequest();
+	} catch (e){
+		// Internet Explorer Browsers
+		try{
+			ajaxRequest = new ActiveXObject('Msxml2.XMLHTTP');
+		} catch (e) {
+			try{
+				ajaxRequest = new ActiveXObject('Microsoft.XMLHTTP');
+			} catch (e){
+				// Something went wrong
+				alert('Your browser broke!');
+				return false;
+			}
+		}
+	}
+	
+	ajaxRequest.open('GET', 'get_submissions.php', true);
+	ajaxRequest.send();
+	
+	ajaxRequest.onreadystatechange = function(){
+		if(ajaxRequest.readyState == 4)
+		{
+			submissions = JSON.parse(ajaxRequest.responseText);	
+			
+			for(var i=0; i < submissions.length; i++)
+			{
+				var pointGeometry = new OpenLayers.Geometry.Point(submissions[i].lon, submissions[i].lat);
+				var pointFeature = new OpenLayers.Feature.Vector(pointGeometry, {x: submissions[i].lon, y: submissions[i].lat, id: i});
+				features.push(pointFeature);
+			}
+			var style = new OpenLayers.Style({
+                    pointRadius: "${radius}",
+                    fillColor: "#000000",
+                    fillOpacity: 0.5,
+                    strokeColor: "#FFFFFF",
+                    strokeWidth: "${width}",
+                    strokeOpacity: 1,
+                    label: "${label}",
+                    fontColor: "#FFFFFF",
+                    fontSize: "16px",
+                    fontFamily: "Impact, Arial",
+                    fontWeight: "bold"
+                }, {
+                    context: {
+                        width: function(feature) {
+                            return (feature.cluster) ? 3 : 2;
+                        },
+                        radius: function(feature) {
+                            var pix = 10;
+                            if(feature.cluster) {
+                                pix = Math.min(feature.attributes.count/10, 3)*3 + 10;
+                            }
+                            return pix;
+                        },
+                        label: function(feature) {
+                        	if(feature.cluster) 
+                        	{ 
+                        		return feature.attributes.count;                         	
+                        	}
+                        	else
+                        	{
+                        		return "";
+                        	}
+                        }
+                    }
+                });
+			var vector = new OpenLayers.Layer.Vector("Submissions", {renderers: ['Canvas','SVG'], strategies: [new OpenLayers.Strategy.Cluster({distance: 18, threshold:2})], styleMap: new OpenLayers.StyleMap({
+						"default": style,
+                        "select": {
+                            fillColor: "#FFFFFF",
+                            fillOpacity: 1,
+                            strokeColor: "#000000",
+                            strokeOpacity: 1,
+                            fontColor: "#000000",
+                        }
+                    })
+                });
+			map.addLayer(vector);
+			vector.addFeatures(features);
+			select = new OpenLayers.Control.SelectFeature(vector, {onSelect: show_submission_details, onUnselect: function(){popup.destroy()}});
+			map.addControl(select);
+			select.activate();
+			analyze_url();	
+		}
+	}
+}
+
+function onPopupClose(evt) 
+{
+    select.unselect(selectedFeature);
+}
+
+
+function show_submission_details(feature)
+{
+	selectedFeature = feature;
+	if(feature.cluster)
+	{
+		popup_content = "<div class='cluster'>" + feature.attributes.count +" people are #WaitingForEd in this area.</div>";
+	}
+	else
+	{
+		var images = '';
+		for(var i = 0; i < submissions[feature.attributes.id].images.length; i++)
+		{
+			images += "<img class='preview' src='images/" + submissions[feature.attributes.id].images[i] + "' onclick='showphoto(this.src);'/>";
+		}
+		popup_content = "<div class='feature'><div id='headline'>" + submissions[feature.attributes.id].alias + "</div><div id='photos'>" + images + "</div><div id='text'>" + submissions[feature.attributes.id].text + "</div> </div>";	
+	}
+	popup = new OpenLayers.Popup.FramedCloud("active_submit", 
+                                     feature.geometry.getBounds().getCenterLonLat(),
+                                     null,
+                                     popup_content,
+                                     null, true, onPopupClose);
+            feature.popup = popup;
+            map.addPopup(popup);
 }
 
 function check_form()
@@ -159,24 +302,33 @@ function check_form()
 	ajaxRequest.onreadystatechange = function(){
 		if(ajaxRequest.readyState == 4)
 		{
+			document.getElementById('submit_error').innerHTML = '';
 			var response = JSON.parse(ajaxRequest.responseText);
 			if(response.request < 14680064)
 			{
 				$("#filesize").progressbar( "option", "value",  response.request);
+				$("#filesize").removeClass( "error");
 			}
 			else
 			{
 				$("#filesize").progressbar( "option", "value", 14680064);
-				document.getElementById('filesize').lastChild.innerHTML ='The maximum upload size is exceeded.';
-				document.getElementById('filesize').lastChild.className += ' error';
-				error = true;
+				$("#filesize").addClass( "error");
+				document.getElementById('submit_error').innerHTML += 'The maximum upload size is exceeded.<br/>';
 			}
 			if(response.status != '')
 			{
-				alert(response.status);
-				$("#filesize").progressbar( "option", "value", 14680064);
-				document.getElementById('filesize').lastChild.className += ' error';
-				error = true;			
+				document.getElementById('submit_error').innerHTML += response.status;
+				$("#filesize").addClass( "error");		
+			}
+			else
+			{
+				$("#filesize").removeClass( "error");
+			}
+			if(document.getElementById('submit_error').innerHTML != '')
+			{
+				document.getElementById('submit_error').innerHTML += '<br/><br/><font size="0.9em">Click <a href="#" onclick="$(\'#submit_error\').hide(\'fade\', null, 500); return false;">here</a> to close me.</font>';
+				$('#submit_error').show("fade", null, 500);
+				return false;
 			}
 		}
 	}
@@ -202,7 +354,7 @@ function submit_form()
 	{
 		document.getElementById('submit_error').innerHTML += 'Please select your location.<br/>';
 	}
-	switch(document.getElementById('photos').substr(this.lastIndexOf("."), this.length))
+	switch(document.getElementById('photos').value.substring(document.getElementById('photos').value.lastIndexOf(".")+1, document.getElementById('photos').value.length))
 	{
 		case 'jpeg': break;
 		case 'jpg': break;
@@ -240,6 +392,60 @@ function submit_form()
 	var data = new FormData(document.getElementById('submit_form'));
 	data.append('user_lat', user_lat);
 	data.append('user_lon', user_lon);
-	ajaxRequest.open('POST', 'check_form.php?do=file', true);
+	ajaxRequest.open('POST', 'check_form.php', true);
 	ajaxRequest.send(data);
+	
+	ajaxRequest.onreadystatechange = function(){
+		var response = JSON.parse(ajaxRequest.responseText);
+		if(response.upload != 'ok')
+		{
+			document.getElementById('submit_error').innerHTML = response.upload;
+			document.getElementById('submit_error').innerHTML += '<br/><br/><font size="0.9em">Click <a href="#" onclick="$(\'#submit_error\').hide(\'fade\', null, 500); return false;">here</a> to close me.</font>';
+			$('#submit_error').show("fade", null, 500);
+		}
+		else
+		{
+			document.getElementById('submit_error').innerHTML = 'You data has been successfully saved. <br/> Thank you for supporting our case!';
+			document.getElementById('submit_error').innerHTML += '<br/><br/><font size="0.9em">Click <a href="#" onclick="showhideform(); document.getElementById(\'reset\').click(); return false;">here</a> to close me.</font>';
+			$('#submit_error').addClass("ok");
+			$('#submit_error').show("fade", null, 500);
+		}
+	}
+}
+
+//	PANORAMA-PHOTOVIEW
+
+function showphoto(url)
+{
+	window.location.href += url.substring(url.lastIndexOf("/")+1, url.length-4); 
+	document.getElementById("panorama_photo").src = url;
+	window.setTimeout(function(){document.getElementById("panorama_photo").style.marginTop = parseFloat(document.getElementById("panorama_photo").height/(-2))+"px";}, 50); //improve css aka position the picture in the middle
+	$("#panorama_photo_container").addClass("visible", {easing: 'linear'}, 500);
+}
+
+function hidephoto()
+{
+	$("#panorama_photo_container").removeClass("visible");
+	window.location.href = window.location.href.substring(0, window.location.href.indexOf('#')); 
+	document.getElementById("panorama_photo").src = '';
+}
+
+function analyze_url()
+{
+	for(var i=0; i<submissions.length;i++) //check if a feature id is contained in the url, if so zoom to the position, show the popup; i == id
+	{
+		var feature = document.location.href.substring(document.location.href.indexOf("#")+1, document.location.href.length);
+		if(!isNaN(feature) && feature == i)
+		{
+			select.select(features[i]);
+			map.setCenter(new OpenLayers.LonLat(features[i].attributes.x,features[i].attributes.y), 10);
+		}
+		for(var j=0; j<submissions[i].images.length; j++) //check if a photo url is contained in the url, if so show the photo
+		{
+			if(document.location.href.indexOf('#'+submissions[i].images[j].substring(submissions[i].images[j].indexOf("/")+1, submissions[i].images[j].length-4)) != -1)
+			{
+				showphoto("images/"+submissions[i].images[j]);
+			}
+		}
+	}
 }
