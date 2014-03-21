@@ -16,7 +16,7 @@ CREATE TABLE `submits` (
   `lon` varchar(50) NOT NULL,
   `text` text,
   `images` varchar(1000) NOT NULL COMMENT 'IMG1.png[;IMG2.jpg[;IMG3.gif[...]]]',
-  `time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ```
