@@ -37,7 +37,19 @@ $mysqli = mysqli_connect('###', '###', '###', '###');
 
 <!--	PHOTO-PANORAMA		-->
 		<div id='panorama_photo_container'>
-			<div id='panorama_photo_container_helper'><div id='panorama_photo_close' onclick='hidephoto();'>x CLOSE</div><div id='panorama_photo_container_helper2'><img id='panorama_photo' src=''/></div></div>
+			<div id='panorama_photo_container_helper'>
+				<div id='panorama_photo_close' onclick='hidephoto();'>x CLOSE</div>
+				<div id='panorama_photo_container_helper2'>
+					<img id='panorama_photo' src=''/>
+					<div>
+						You can use this url to link this photo in social media:
+						<a id='site_url' href=''></a>
+						<span>
+							NO, WE WON'T USE BIG-DATA LIKE-BUTTONS!1!!
+						</span>
+					</div>
+				</div>
+			</div>
 		</div>
     	
 <!--	FORM				-->	
@@ -52,9 +64,10 @@ $mysqli = mysqli_connect('###', '###', '###', '###');
 			</script>
 
 			<textarea name='text' placeholder='Your message to the world. (optional)'></textarea>
-			<input type='button' value='SET 
-LOCATION' id="set_location_button" onclick='if(mobile){showhideform(); alert("Tap anywhere on the map to set your location."); map.events.register("touchend", map, man_set_user_location);}else{map.events.register("click", map, man_set_user_location); this.style.color = "black"; this.style.backgroundColor = "white"; document.getElementById("map").style.cursor = "crosshair";}'> <input type='button' value="AUTO 
-DETECT" id="auto_location_button" onclick='if(navigator.geolocation){navigator.geolocation.getCurrentPosition(auto_set_user_location, location_error, {timeout:2000}); this.style.color = "black"; this.style.backgroundColor = "white";}else{alert("Your browser does not support geolocation.");}'>
+				<div id='location_container'>
+			<input type='button' value='SET LOCATION' id="set_location_button" onclick='if(mobile){showhideform(); alert("Tap anywhere on the map to set your location."); map.events.register("touchend", map, man_set_user_location);}else{map.events.register("click", map, man_set_user_location); this.style.color = "black"; this.style.backgroundColor = "white"; document.getElementById("map").style.cursor = "crosshair";}'>
+			<input type='button' value="AUTO DETECT" id="auto_location_button" onclick='if(navigator.geolocation){navigator.geolocation.getCurrentPosition(auto_set_user_location, location_error, {timeout:2000}); this.style.color = "black"; this.style.backgroundColor = "white";}else{alert("Your browser does not support geolocation.");}'>
+				</div>
 			<span id='location_set'>&#10008;</span>
 			<input type='reset' id='reset' value='reset'>
 			<input type='button' value='submit' id="submit_button" onclick='submit_form();'><br/>
@@ -63,7 +76,7 @@ DETECT" id="auto_location_button" onclick='if(navigator.geolocation){navigator.g
 		
 <!--	MAP					-->	
 		<div id='map'></div>
-		<script type='text/javascript'> window.setTimeout(function(){document.getElementsByClassName("olControlAttribution olControlNoSelect")[0].innerHTML += ' | <a href="#" onclick="showhideimprint();">Imprint</a>';}, 1500); </script>
+		<div id='map_attribution'>&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | <a href="#" onclick="showhideimprint();">Imprint</a></div>
 
 <!--	IMPRINT				-->	
 		<div id='imprint'>

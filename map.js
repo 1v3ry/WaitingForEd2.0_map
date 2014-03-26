@@ -102,10 +102,12 @@ function showhideimprint()
 	if(document.getElementById("map").className.indexOf("small") == -1)
 	{
 		$("#map").addClass("small", {easing: "easeInQuart"}, 500);
+		$("#map_attribution").addClass("small", {easing: "easeInQuart"}, 500);
 	}
 	else
 	{
 		$("#map").removeClass("small", {easing: "easeOutQuart"}, 500);
+		$("#map_attribution").removeClass("small", {easing: "easeOutQuart"}, 500);
 	}
 }
 
@@ -132,7 +134,6 @@ function initialize_map()
     	{ controls: 
     		[
     			controls,
-    			new OpenLayers.Control.Attribution(),
     			new OpenLayers.Control.Navigation()
     		]
     	});
@@ -417,16 +418,16 @@ function submit_form()
 
 function showphoto(url)
 {
-	window.location.href += url.substring(url.lastIndexOf("/")+1, url.length-4); 
+	document.getElementById("site_url").innerHTML = "sho.rt/url/#"+url.substring(url.lastIndexOf("/")+1, url.length-4); 
+	document.getElementById("site_url").href = "#"+url.substring(url.lastIndexOf("/")+1, url.length-4); 
 	document.getElementById("panorama_photo").src = url;
-	window.setTimeout(function(){document.getElementById("panorama_photo").style.marginTop = parseFloat(document.getElementById("panorama_photo").height/(-2))+"px";}, 50); //improve css aka position the picture in the middle
+//	window.setTimeout(function(){document.getElementById("panorama_photo").style.marginTop = parseFloat(document.getElementById("panorama_photo").height/(-2))+"px";}, 50); //"improve" css aka position the picture in the middle
 	$("#panorama_photo_container").addClass("visible", {easing: 'linear'}, 500);
 }
 
 function hidephoto()
 {
 	$("#panorama_photo_container").removeClass("visible");
-	window.location.href = window.location.href.substring(0, window.location.href.indexOf('#')); 
 	document.getElementById("panorama_photo").src = '';
 }
 

@@ -75,14 +75,13 @@ input[type='button'], input[type='reset']
 
 input[type='button']:not(#submit_button)
 {
-	display:inline;
-	width:auto;
-	height:auto;
-	float:left;
-	margin: 0 0 3% 2%;
+	display:block;
+	width:105%;
+	height:105%;
+	float:none;
+	margin: 0 0 4% 2%;
 	cursor:pointer;
-	font-size:.5em;
-	white-space:wrap;
+	font-size:.7em;
 }
 
 #header
@@ -305,10 +304,16 @@ background-image: linear-gradient(to bottom, #BBBBBB 0%, #000000 5%, #AAAAAA 10%
 	padding-top:1%;
 }
 
+#location_container
+{
+	float:left;
+	margin-left:1%;
+}
+
 #location_set
 {
-	font-size:1.5em;
-	margin-left:2%;
+	font-size:1.8em;
+	margin-left:3%;
 	color:#CC0000;
 }
 
@@ -317,7 +322,7 @@ background-image: linear-gradient(to bottom, #BBBBBB 0%, #000000 5%, #AAAAAA 10%
 	color:white;
 	font-size:.6em;
 	text-align:left;
-	margin:5% 30% 1% 2%;
+	margin:8% 2% 1% 2%;
 	letter-spacing:.1em;
 	font-family:Arial;
 }
@@ -366,12 +371,12 @@ background-image: linear-gradient(to bottom, #BBBBBB 0%, #000000 5%, #AAAAAA 10%
 {
 	position:relative;
 	max-width:90%;
-	max-height:75%;
-	top:50%;
+	height:75%;
 	z-index:9;
 	padding:1%;
 	background-color:black;
 	border:.1em solid white;
+	margin-bottom:.5em;
 	-moz-border-radius-topleft: 1em;
 	-webkit-border-top-left-radius: 1em;
 	-khtml-border-top-left-radius: 1em;
@@ -388,6 +393,36 @@ background-image: linear-gradient(to bottom, #BBBBBB 0%, #000000 5%, #AAAAAA 10%
 	-webkit-border-bottom-right-radius: 1em;
 	-khtml-border-bottom-right-radius: 1em;
 	border-bottom-right-radius: 1em;
+}
+
+#panorama_photo_container_helper2 div
+{
+	font-size:1.3em;
+	color:white;
+	letter-spacing:.1em;
+	font-family: Arial;
+	font-weight:bold;
+}
+
+#site_url
+{
+	font-size:0.8em;
+	display:block;
+	margin-top:.3em;
+	color:white;
+	letter-spacing:.1em;
+	font-family: Impact, Arial;
+	font-weight:bold;
+}
+
+#panorama_photo_container_helper2 span
+{
+	font-size:0.6em;
+	display:block;
+	letter-spacing:.2em;
+	margin-top:.5em;
+	font-family: Arial;
+	font-weight:bold;
 }
 
 #panorama_photo_close
@@ -432,6 +467,19 @@ background-image: linear-gradient(to bottom, #BBBBBB 0%, #000000 5%, #AAAAAA 10%
 #map.small
 {
 	height:80%;
+}
+
+#map_attribution
+{
+	position:absolute;
+	bottom:5%;
+	right:5%;
+	z-index:4;
+}
+
+#map_attribution.small
+{
+	bottom:25%;
 }
 
 .cluster
@@ -489,6 +537,7 @@ background-image: linear-gradient(to bottom, #BBBBBB 0%, #000000 5%, #AAAAAA 10%
 	letter-spacing:1px;
 	font-weight:bold;
 	margin-top: 5%;
+	font-family: Arial;
 }
 
 div.olControlPanZoomBar
