@@ -1,4 +1,5 @@
 <?
+include('constants.php');
 function create_filename() {
     $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $string = '';
@@ -61,7 +62,7 @@ else
 	}
 	if($mime == true)
 	{
-		echo "Your photo(s) must be of the type JPEG, PNG, GIF of TIFF.\\n";
+		echo "Your photo(s) must be of the type JPEG, PNG, GIF or TIFF.\\n";
 		$data_error = true;
 	}
 	echo "\",";
@@ -70,7 +71,7 @@ else
 	if($data_error == false)
 	{
 		$upload_error = '';
-		$mysqli = mysqli_connect('###', '###', '###', '###');
+		$mysqli = mysqli_connect(HOST, USER, PASSWORD, DB);
 		for($i = 0; $i < count($_FILES["photos"]["name"]); $i++)
 		{		
 			do
@@ -91,7 +92,7 @@ else
 			if($image_string != ''){$image_string .= ';';}
 			$image_string .= $image_name.$filetype;
 		}
-		$qs = "INSERT INTO submits (alias, lat, lon, text, images) VALUES ('".htmlspecialchars(strip_tags($_POST["alias"]))."', '".htmlspecialchars(strip_tags($_POST["user_lat"]))."', '".htmlspecialchars(strip_tags($_POST["user_lon"]))."', '".htmlspecialchars(strip_tags($_POST["text"]))."', '".htmlspecialchars(strip_tags($image_string))."');"; // htmlspecialchars(strip_tags()); to secure against XSS ans SQL-Injection attacks
+		$qs = "INSERT INTO submits (alias, lat, lon, text, images) VALUES ('".htmlspecialchars(strip_tags($_POST["alias"]))."', '".htmlspecialchars(strip_tags($_POST["user_lat"]))."', '".htmlspecialchars(strip_tags($_POST["user_lon"]))."', '".htmlspecialchars(strip_tags($_POST["text"]))."', '".htmlspecialchars(strip_tags($image_string))."');"; // htmlspecialchars(strip_tags()); to secure against XSS and SQL-Injection attacks
 		if(!mysqli_query($mysqli, $qs)){$upload_error .= 'The submitted data could not be saved.\\n';}
 		mysqli_close($mysqli);
 		if($upload_error != '')

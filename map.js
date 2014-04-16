@@ -38,7 +38,7 @@ function auto_set_user_location(pos)
 	user_lat = parseFloat(user_location_marker.lonlat.lat);
 	user_lon = parseFloat(user_location_marker.lonlat.lon);
 	map.setCenter(position);
-	document.getElementById('location_set').style.color = "#00CC00";
+	document.getElementById('location_set').style.color = "#44CC44";
 	document.getElementById('location_set').innerHTML = "&#10004;";
 	document.getElementById('auto_location_button').style.color = "white";
 	document.getElementById('auto_location_button').style.backgroundColor = "black";
@@ -63,7 +63,7 @@ function man_set_user_location(pos)
 		user_lon = parseFloat(map.getLonLatFromPixel(pos.xy).lon);
 		map.events.unregister("click", map, man_set_user_location);
 	}
-	document.getElementById('location_set').style.color = "#00CC00";
+	document.getElementById('location_set').style.color = "#44CC44";
 	document.getElementById('location_set').innerHTML = "&#10004;";
 	document.getElementById('set_location_button').style.color = "white";
 	document.getElementById('set_location_button').style.backgroundColor = "black";
@@ -254,7 +254,7 @@ function show_submission_details(feature)
 		var images = '';
 		for(var i = 0; i < submissions[feature.attributes.id].images.length; i++)
 		{
-			images += "<img class='preview' src='images/" + submissions[feature.attributes.id].images[i] + "' onclick='showphoto(this.src);'/>";
+			images += "<img class='preview' src='images/" + submissions[feature.attributes.id].images[i] + "' onclick='showphoto(this.src);' alt='Photo from " + submissions[feature.attributes.id].alias + "'/>";
 		}
 		popup_content = "<div class='feature'><div id='headline'>" + submissions[feature.attributes.id].alias + "</div><div id='photos'>" + images + "</div><div id='text'>" + submissions[feature.attributes.id].text + "</div> </div>";	
 	}

@@ -1,5 +1,6 @@
 <?
-$mysqli = mysqli_connect('###', '###', '###', '###');
+include('constants.php');
+$mysqli = mysqli_connect(HOST, USER, PASSWORD, DB);
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -32,8 +33,8 @@ $mysqli = mysqli_connect('###', '###', '###', '###');
 				WAITING FOR ED
 			</span>
 		</div>
-		<div id='logo'></div>
-    	<div id="submit_plus" onclick='showhideform();'></div>
+		<div id='logo'><img src='' height='0px' width='0px' alt='W - whistleblower power - truth is coming and it cannot be stopped!' title='logo'/></div>
+    	<div id="submit_plus" onclick='showhideform();'><img src='' height='0px' width='0px' alt='white plus in a circle - add yourself!' title='submit_plus'/></div> <!-- the 0px imgs are for screen readers-->
 
 <!--	PHOTO-PANORAMA		-->
 		<div id='panorama_photo_container'>
@@ -80,7 +81,9 @@ $mysqli = mysqli_connect('###', '###', '###', '###');
 
 <!--	IMPRINT				-->	
 		<div id='imprint'>
-			<span id='license'>This work is licensed as public domain, except for the <a href='https://jqueryui.com' target='_blank'>jQuery user interface</a>, <a href='https://www.openstreetmap.org/copyright' target='_blank'>openstreetmap</a> and <a href='' target='_blank'>openlayers</a> plugins, which are licensed under <a href='https://jquery.org/license' target='_blank'>the jQuery License</a>, the <a href='http://opendatacommons.org/licenses/odbl/'>ODbL-License</a>/<a href='https://creativecommons.org/licenses/by-sa/2.0/' target='_blank'>CC BY-SA 2.0</a>, respectively a <a href='https://github.com/openlayers/openlayers/blob/master/license.txt' target='_blank'>BSD-License</a>.</span>
+			<span id='license'>This work is licensed as public domain.<br/>
+			Special thanks go to the <a href='https://jqueryui.com' target='_blank'>jQuery user interface</a>, <a href='https://www.openstreetmap.org/' target='_blank'>openstreetmap</a> and <a href='' target='_blank'>openlayers</a>.<br/><br/>
+			The code is available at <a href='https://github.com/1v3ry/WaitingForEd2.0_map' target='_blank'>https://github.com/1v3ry/WaitingForEd2.0_map</a>.</span>
 			<span id='address'><span class='headline'>Host & Admin</span><br/>Oliver Sch&ouml;nefeld<br/>Ferdinand-Jost-Str. 45<br/>04299 Leipzig; Germany<br/>&#9993; <a href='mailto:oliver.schoenefeld@me.com'>MAIL</a> < <a href='http://pgp.mit.edu:11371/pks/lookup?op=get&search=0xB2B9A8393D2A593C' title='0xB2B9A8393D2A593C' target='_blank'>PGP</a></span>
 			<span id='address'><span class='headline'>Content</span><br>Andy Mangelmann<br/>Nachtigallenweg 28<br/>47638 Straelen; Germany<br/>+49 157/88649509</span>
 		</div>
